@@ -27,11 +27,11 @@ def new_record(imsi, country, brand, operator, lac, cellid, timestamp):
 def just_saw_record(imsi, timestamp, lac, cellid):
     session = create_session()
     rec = session.query(Record).filter(Record.imsi == imsi).first()
-    rec.seen.append({"timestamp": timestamp, "LAC": lac, "cell_id": cellid})
+    rec.seen = rec.seen + [{"timestamp": timestamp, "LAC": lac, "cell_id": cellid}]
     loglevel = rec.log_level
     session.commit()
     session.close()
-    if loglevel == 1:
+    if str(loglevel) == "1":
         return True
     return False
 
